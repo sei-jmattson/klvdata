@@ -28,16 +28,17 @@ class ParserSingleLong(unittest.TestCase):
     def test_singlepacket(self):
 
         # Example from MISB ST 0902.5
-        with open('./data/DynamicConstantMISMMSPacketData.bin', 'rb') as f:
+        with open('./tmp/sbs.klv', 'rb') as f:
             packet = f.read()
 
         from klvdata.streamparser import StreamParser
         from klvdata import misb0601
         from klvdata import misb0102
+        from klvdata import flir
 
         for packet in StreamParser(packet):
-            # packet.structure()
-            pass
+            packet.structure()
+            # pass
 
 
 if __name__ == "__main__":

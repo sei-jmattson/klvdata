@@ -117,18 +117,29 @@ class SetParser(Element, metaclass=ABCMeta):
         repeat(self.items.values())
         return OrderedDict(metadata)
 
-    def structure(self):
-        print(str(type(self)))
+    def structure2(self):
+        print(self.name)
 
         def repeat(items, indent=1):
             for item in items:
-                print(indent * "\t" + str(type(item)))
+                print(indent * "\t" + item.name)
                 if hasattr(item, 'items'):
                     repeat(item.items.values(), indent+1)
                 else:
                     print((indent+1) * "\t" + str(item.value))
 
         repeat(self.items.values())
+
+    def structure(self):
+
+        def repeat(items, name):
+            for item in items:
+                if hasattr(item, 'items'):
+                    repeat(item.items.values(), f"{name}.{item.name.replace(' ', '')}")
+                else:
+                    print(f"{name} {item.name}: {item.value}")
+
+        repeat(self.items.values(), self.name.replace(" ", ""))
 
 
 def str_dict(values):
