@@ -109,7 +109,7 @@ class SetParser(Element, metaclass=ABCMeta):
         def repeat(items, indent=1):
             for item in items:
                 try:
-                    metadata[item.TAG] = (item.LDSName, item.ESDName, item.UDSName, str(item.value.value))
+                    metadata[item.TAG] = (item.LDSName, item.ESDName, item.UDSName, item.value.value)
                 except:
                     None
                 if hasattr(item, 'items'):
@@ -117,30 +117,28 @@ class SetParser(Element, metaclass=ABCMeta):
         repeat(self.items.values())
         return OrderedDict(metadata)
 
-    def structure2(self):
-        print(self.name)
-
-        def repeat(items, indent=1):
-            for item in items:
-                print(indent * "\t" + item.name)
-                if hasattr(item, 'items'):
-                    repeat(item.items.values(), indent+1)
-                else:
-                    print((indent+1) * "\t" + str(item.value))
-
-        repeat(self.items.values())
-
     def structure(self):
+        klv_dict(self.MetadataList())
 
-        def repeat(items, name):
-            for item in items:
-                if hasattr(item, 'items'):
-                    repeat(item.items.values(), f"{name}.{item.name.replace(' ', '')}")
-                else:
-                    print(f"{name} {item.name}: {item.value}")
+    # def structure(self):
+    #     print(self.name)
 
-        repeat(self.items.values(), self.name.replace(" ", ""))
+    #     def repeat(items, indent=1):
+    #         for item in items:
+    #             print(indent * "\t" + item.name)
+    #             if hasattr(item, 'items'):
+    #                 repeat(item.items.values(), indent+1)
+    #             else:
+    #                 print((indent+1) * "\t" + str(item.value))
 
+    #     repeat(self.items.values())
+
+def klv_dict(meta):
+    d = {}
+    for key in meta:
+        d[key] = meta[key][-1]
+        print(f"[{key}] {meta[key][0]}: { meta[key][-1]}")
+    return d
 
 def str_dict(values):
     out = []
